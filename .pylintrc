@@ -3,11 +3,10 @@
 reports=no
 output-format=colorized
 
-[MESSAGES CONTROL]
-
-confidence=HIGH
-
 [BASIC]
+
+# Sorry not sorry.
+indent-string='  '
 
 # One-letter variables are pretty useful in formulas.
 variable-rgx=[a-z_][a-z0-9_]{0,35}$
@@ -24,4 +23,9 @@ max-args=10
 max-locals=20
 max-statements=70
 max-attributes=10
-min-public-methods=0
+min-public-methods=1
+
+[MISCELLANEOUS]
+
+# TODOs should be allowed.
+notes=
