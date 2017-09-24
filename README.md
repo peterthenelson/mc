@@ -1,3 +1,3 @@
-# Template for Git Repos
+# Middle Chinese Phonology
 
-Includes default `.gitignore` and scaffolding for presubmit tests.
+Having fun with datasets with Middle Chinese pronunciation.
