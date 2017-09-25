@@ -142,14 +142,13 @@ def extract_records(input_dir, output_file):
 
 def main():
   """Runs the pipeline with the given command line arguments."""
+  dirname = os.path.dirname(__file__)
   parser = argparse.ArgumentParser(
       description='Extracts numbered ytenx guangyun records from html pages.')
-  parser.add_argument('-i', '--input_dir', dest='input_dir', type=str,
-                      required=True, help='Directory with numbered html files.')
   parser.add_argument('-o', '--output_file', dest='output_file', type=str,
                       required=True, help='File to dump json output to.')
   args = parser.parse_args()
-  extract_records(args.input_dir, args.output_file)
+  extract_records(os.path.join(dirname, 'data_20170503'), args.output_file)
 
 if __name__ == '__main__':
   main()
