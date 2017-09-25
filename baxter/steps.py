@@ -181,6 +181,8 @@ def _substituted_final_r2(init_r2, final_r2):
       final_r2 = 'w' + final_r2[1:]
     elif final_r2.startswith('v'):
       final_r2 = 'yu' + final_r2[1:]
+  if init_r2 in ('j', 'q', 'x') and final_r2.startswith('v'):
+    final_r2 = 'u' + final_r2[1:]
   return final_r2
 
 def expected_msm_syllable(syl):
