@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Converts Baxter's notation to predicted Pinyin."""
+"""Converts Baxter's notation to predicted Pinyin.
+
+python -m baxter.mc2pinyin -o /tmp/mismatches.csv
+"""
 
 import argparse
 import os.path
