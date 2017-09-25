@@ -23,7 +23,7 @@ max-args=10
 max-locals=20
 max-statements=70
 max-attributes=10
-min-public-methods=1
+min-public-methods=0
 
 [MISCELLANEOUS]
 
