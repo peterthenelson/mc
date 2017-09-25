@@ -4,6 +4,8 @@
 This will serve as a reference implementation when making other converters.
 """
 
+import logging
+
 def expected_msm_tone(syl):
   """Get the expected tone in MSM."""
   tone = '?'
@@ -167,7 +169,7 @@ def _final_r2(medial, final_r1, division, tone_r1):
 def _substituted_final_r2(init_r2, final_r2):
   """Cleanups of the final."""
   if (init_r2 in ('zh', 'ch', 'sh', 'r') and final_r2.startswith('i') and
-      final_r2 != 'i'):
+      final_r2 not in ('i', 'in', 'ing')):
     final_r2 = final_r2[1:]
   if init_r2 == '':
     final_r2 = {'ong': 'weng', 'un': 'wen', 'ui': 'wei', 'iu': 'you'}.get(final_r2, final_r2)
@@ -181,48 +183,63 @@ def _substituted_final_r2(init_r2, final_r2):
       final_r2 = 'w' + final_r2[1:]
     elif final_r2.startswith('v'):
       final_r2 = 'yu' + final_r2[1:]
-  if init_r2 in ('j', 'q', 'x') and final_r2.startswith('v'):
+  if init_r2 in ('j', 'q', 'x', 'r') and final_r2.startswith('v'):
     final_r2 = 'u' + final_r2[1:]
   return final_r2
 
 def expected_msm_syllable(syl):
   """Directly implementing steps in MC_to_mand.pdf."""
+  logging.debug('baxter = %s', syl.baxter)
   # steps 1, 4, and 6 occur in the constructor of MiddleChineseSyllable.
   # step 2 maps initials to round-1 initials.
   init_r1 = _init_r1(syl.baxter_initial)
+  logging.debug('init_r1 = %s', init_r1)
   # step 3 maps tones to round-1 tones (and changes ru final stops).
   tone_r1 = _tone_r1(syl.tone)
+  logging.debug('tone_r1 = %s', tone_r1)
   # step 5 moves palatal information to final.
   final_r1 = _final_r1(syl.baxter_initial, syl.baxter_final)
+  logging.debug('final_r1 = %s', final_r1)
   # step 7 determines division
   # TODO Move division into the MiddleChineseSyllable class.
   division = _division(final_r1)
+  logging.debug('division = %s', division)
   # step 8 removes w's in closed syllables.
   if not syl.open:
     final_r1 = final_r1.replace('w', '')
   # step 9 changes -m to -n.
   if final_r1[-1] == 'm':
     final_r1 = final_r1[:-1] + 'n'
+  logging.debug('final_r1 (after 8&9) = %s', final_r1)
   # step 10 makes f appear.
   init_r1 = _remove_f(init_r1, final_r1)
+  logging.debug('init_r1 (after 10) = %s', init_r1)
   # step 11 simplifies the round-1 finals.
   final_r1 = _simplify_final_r1(final_r1, syl.baxter)
+  logging.debug('final_r1 (after 11) = %s', final_r1)
   # step 12 changes Vh to v0 in division 3.
   if init_r1 == 'Vh' and division == 3:
     init_r1 = 'v0'
+  logging.debug('init_r1 (after 12) = %s', init_r1)
   # step 13 calculates round-2 tones.
   tone_r2 = _tone_r2(tone_r1, init_r1)
+  logging.debug('tone_r2 = %s', tone_r2)
   # step 14 calculates round-2 initials.
   init_r2 = _init_r2(init_r1, tone_r2)
+  logging.debug('init_r2 = %s', init_r2)
   # step 15 finds medials.
   medial = _medial(division, syl.open, init_r2)
+  logging.debug('medial = %s', medial)
   # step 16-17 creates the round-2 final.
   final_r2 = _final_r2(medial, final_r1, division, tone_r1)
+  logging.debug('final_r2 = %s', final_r2)
   # step 18 palatalizes initials.
   if medial in ('i', 'v'):
     init_r2 = {'g': 'j', 'z': 'j', 'k': 'q', 'c': 'q', 'h': 'x', 's': 'x'}.get(init_r2, init_r2)
+  logging.debug('init_r2 (after 18) = %s', init_r2)
   # step 19 does various cleanups of the final.
   final_r2 = _substituted_final_r2(init_r2, final_r2)
+  logging.debug('final_r2 (after 19) = %s', final_r2)
   # step 20 puts it all together.
   return init_r2 + final_r2 + tone_r2
 
