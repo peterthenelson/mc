@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """Tests for steps module.
 
-NOTE: Errors can be debugged using test_util.DebugOn
+NOTE: Errors can be debugged using @test_util.debug
 
 from . import test_util
-
-with test_util.DebugOn():
-  statement_that_calls_logging_debug()
+class FailingTest(...):
+  @test_util.debug
+  test_case_to_debug(self):
+    ...
 """
 
 import unittest
@@ -38,3 +39,4 @@ class StepsTest(unittest.TestCase):
     self.expect_pinyin('nyu', 'ru2')
     self.expect_pinyin('nywen', 'ruan2')
     self.expect_pinyin('nywin', 'run2')
+
