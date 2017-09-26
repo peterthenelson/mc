@@ -40,3 +40,18 @@ class StepsTest(unittest.TestCase):
     self.expect_pinyin('nywen', 'ruan2')
     self.expect_pinyin('nywin', 'run2')
 
+  def test_tones(self):
+    """Test that tones work."""
+    self.expect_pinyin("'oj", 'ai1')
+    self.expect_pinyin('ngaw', 'ao2')
+    self.expect_pinyin('baeH', 'ba4')
+    self.expect_pinyin('nyo', 'ru2')
+    self.expect_pinyin('la', 'luo2')
+
+  def test_uo_spelling(self):
+    """Test that (u)o is spelled right."""
+    self.expect_pinyin('tha', 'tuo1')
+    self.expect_pinyin('tsha', 'cuo1')
+    self.expect_pinyin('dak', 'duo2')
+    self.expect_pinyin('hwat', 'huo2')
+
