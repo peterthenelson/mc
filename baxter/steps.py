@@ -97,13 +97,15 @@ def _simplify_final_r1(final_r1, bax):
 def _tone_r2(tone_r1, init_r1):
   """Get second round tone."""
   tone_r2 = tone_r1
-  if tone_r1 == '1' and init_r1[0] not in 'vV':
+  if tone_r1 == '1' and init_r1[0] in 'vVrl':
     tone_r2 = '2'
   elif tone_r1 == '2':
     if init_r1[0] == 'V':
       tone_r2 = '4'
     else:
       tone_r2 = '3'
+  elif tone_r1 == '3':
+    tone_r2 = '4'
   elif tone_r1 == '4' and init_r1[0] == 'V':
     tone_r2 = '2'
   return tone_r2
@@ -185,6 +187,8 @@ def _substituted_final_r2(init_r2, final_r2):
       final_r2 = 'yu' + final_r2[1:]
   if init_r2 in ('j', 'q', 'x', 'r') and final_r2.startswith('v'):
     final_r2 = 'u' + final_r2[1:]
+  if init_r2 not in ('b', 'p', 'm', 'f', 'w') and final_r2 == 'o':
+    final_r2 = 'uo'
   return final_r2
 
 def expected_msm_syllable(syl):
